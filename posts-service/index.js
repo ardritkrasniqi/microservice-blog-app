@@ -1,8 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const { randomBytes } = require('crypto');
 
 const app = express();
+app.use(bodyParser.json());
 
-const { randomBytes } = require('crypto');
+
 
 const posts = {};
 
@@ -20,6 +23,8 @@ app.post('/posts', (req, res) => {
         id,
         title
     };
+
+    res.status(201).send(posts[id]);
 });
 
 // listen on certain port
