@@ -17,7 +17,6 @@ export default () => {
     }, []);
 
     const renderedPosts = Object.values(posts).map(post => {
-        console.log('post is ' + post);
         return (<div className="card" style={{width: '30%', marginBottom: '20px'}}
         key={post.id}
         >
