@@ -41,6 +41,19 @@ app.post('/posts/:id/comments', async (req, res) => {
 });
 
 
+// event handler for comment service
+
+app.post('/events', (req, res) => {
+
+    const event = req.body.type;
+
+    console.log(`Comments recieved the event ${event}`);
+    
+    res.send({message: 'success', status: 'true'})
+});
+
+
+
 app.listen(4001, () => {
     console.log("Listening on port: 4002")
 });

@@ -38,6 +38,17 @@ app.post('/posts', async (req, res) => {
     res.status(201).send({ id, title });
 });
 
+// event handler for post service
+
+app.post('/events', (req, res) => {
+
+    const event = req.body.type;
+
+    console.log(`Posts recieved the event ${event}`);
+    
+    res.send({message: 'success', status: 'true'})
+});
+
 // listen on certain port
 app.listen(4000, () => {
     console.log("Listening on port: 4000")
