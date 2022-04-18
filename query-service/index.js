@@ -1,22 +1,38 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 
 const port = 4002;
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
-let posts = [];
+let posts = {};
 
 // the route to get all posts with their corresponding comments
 app.get('/posts', (req, res) => {
-
+    res.send(posts);
 });
 
 // listen for the event buss emits, and save newly created posts or comments
 app.post('/events', (req, res) => {
-    console.log(`An event has just been emited ${req.body.type}`);
+    // deconstruct the event data and get type & data
+    const {type, data} = req.body;
+
+    if(type == 'PostCreated'){
+       const { id, title } = data;
+       posts[id] = { id, title, comments: []};
+    } else if(type == 'CommentCreated'){
+        const {id , text, post_id } = data;
+        const post = posts[post_id];
+
+        post.comments.push({id, text})
+    } else {
+       return res.send({message: 'No event with this type exists!'});
+    }
+    
     res.send({});
 });
 
