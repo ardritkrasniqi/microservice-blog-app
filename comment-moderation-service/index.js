@@ -18,7 +18,7 @@ app.post('/events',  async(req, res) => {
     const {type, data} = req.body;
 
     if(type === 'CommentCreated'){
-        const status = bannedWords.includes(data.text) ? 'rejected' : 'approved';
+        const status = bannedWords.some(v => data.text.includes(v)) ? 'rejected' : 'approved';
 
 
         // destructure the comment data

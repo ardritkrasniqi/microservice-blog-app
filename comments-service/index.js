@@ -56,7 +56,7 @@ app.post('/events', (req, res) => {
 
 
 app.listen(4001, () => {
-    console.log("Listening on port: 4002")
+    console.log("Listening on port: 4001")
 });
 
 
