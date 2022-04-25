@@ -34,16 +34,3 @@ export default () => {
     </div>
 
 }
-
-// {
-//     "b849bbfc": {
-//         "id": "b849bbfc",
-//         "title": "tst poaasdfasdf",
-//         "comments": [
-//             {
-//                 "id": "b43d62af",
-//                 "text": "asdfasdfasdf"
-//             }
-//         ]
-//     }
-// }

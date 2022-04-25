@@ -18,10 +18,10 @@ app.get('/posts/:id/comments', (req, res) => {
 
 app.post('/posts/:id/comments', async (req, res) => {
     const id = randomBytes(4).toString('hex');
-    const text = req.body.text;
+    const  text  = req.body.text;
 
     const comments = commentsByPostId[req.params.id] || [];
-    comments.push({ id: id, text: text });
+    comments.push({ id: id, text: text, status: 'pending' });
 
     commentsByPostId[req.params.id] = comments;
 
@@ -30,6 +30,7 @@ app.post('/posts/:id/comments', async (req, res) => {
         data: {
             id,
             text,
+            status: 'pending',
             post_id: req.params.id
         }  
       };
@@ -55,7 +56,7 @@ app.post('/events', (req, res) => {
 
 
 app.listen(4001, () => {
-    console.log("Listening on port: 4002")
+    console.log("Listening on port: 4001")
 });
 
 

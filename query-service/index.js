@@ -17,22 +17,30 @@ app.get('/posts', (req, res) => {
 });
 
 // listen for the event buss emits, and save newly created posts or comments
-app.post('/events', (req, res) => {
-    // deconstruct the event data and get type & data
-    const {type, data} = req.body;
+app.post('/events', async (req, res) => {
+    // destructure the event data and get type & data
+    const { type, data } = req.body;
 
-    if(type == 'PostCreated'){
-       const { id, title } = data;
-       posts[id] = { id, title, comments: []};
-    } else if(type == 'CommentCreated'){
-        const {id , text, post_id } = data;
+    if (type == 'PostCreated') {
+        const { id, title } = data;
+        posts[id] = { id, title, comments: [] };
+    } else if (type == 'CommentCreated') {
+        const { id, text, status, post_id } = data;
         const post = posts[post_id];
 
-        post.comments.push({id, text})
+        await post.comments.push({ id, text, status, post_id })
+
+    } else if (type == 'CommentModerated') {
+        // comment moderated event
+        const { id, text, status, post_id } = data;
+        const post = posts[post_id];
+        //update existing comment status
+        objIndex = post.comments.findIndex((obj => obj.id == id));
+        post.comments[objIndex].status = status;
     } else {
-       return res.send({message: 'No event with this type exists!'});
+        return res.send({ message: 'No event with this type exists!' });
     }
-    
+
     res.send({});
 });
 
