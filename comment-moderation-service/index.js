@@ -32,8 +32,7 @@ app.post('/events',  async(req, res) => {
                 status,
                 post_id
             }  
-          };
-    
+          };         
           // emit an event to notify the event buss that a new comment is moderated
           await axios.post('http://localhost:4005/events', event)
     }
