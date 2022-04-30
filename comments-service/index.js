@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const { randomBytes } = require('crypto');
 const cors = require('cors');
 const { default: axios } = require('axios');
+const { stat } = require('fs');
 
 const app = express();
 app.use(bodyParser.json());
@@ -44,11 +45,33 @@ app.post('/posts/:id/comments', async (req, res) => {
 
 // event handler for comment service
 
-app.post('/events', (req, res) => {
+app.post('/events', async(req, res) => {
 
-    const event = req.body.type;
 
-    console.log(`Comments recieved the event ${event}`);
+    const { type, data } = req.body;
+    const { post_id, id ,status, text } = data;
+    // comment moderated event
+    if(type == 'CommentModerated'){
+
+        const comments = commentsByPostId[post_id];
+
+        const comment = comments.find(comment => {
+            return comment.id === id;
+        });
+        comment.status = status;
+
+        // tell the other service that this update has occured
+        const event = {
+            type: 'CommentUpdated',
+            data: {
+                 id,
+                 text,
+                 post_id,
+                 status
+            }
+        }
+        await axios.post('http://localhost:4005/events', event);
+    }
     
     res.send({message: 'success', status: 'true'})
 });

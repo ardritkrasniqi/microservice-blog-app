@@ -30,13 +30,17 @@ app.post('/events', async (req, res) => {
 
         await post.comments.push({ id, text, status, post_id })
 
-    } else if (type == 'CommentModerated') {
+    } else if (type == 'CommentUpdated') {
+
         // comment moderated event
         const { id, text, status, post_id } = data;
         const post = posts[post_id];
         //update existing comment status
-        objIndex = post.comments.findIndex((obj => obj.id == id));
-        post.comments[objIndex].status = status;
+        const comment = post.comments.find(comment => {
+            return comment.id === id;
+        });
+        comment.status = status;
+        comment.text = text;
     } else {
         return res.send({ message: 'No event with this type exists!' });
     }
