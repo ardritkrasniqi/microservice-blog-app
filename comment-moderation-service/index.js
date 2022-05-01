@@ -25,7 +25,7 @@ app.post('/events',  async(req, res) => {
         const { id, text, post_id } = data
         // create an event object with necessary data
         const event = {
-            type: 'CommentModerated',
+            type: 'CommentUpdated',
             data: {
                 id,
                 text,
@@ -33,7 +33,7 @@ app.post('/events',  async(req, res) => {
                 post_id
             }  
           };         
-          await new Promise(r => setTimeout(r, 10000));
+          //await new Promise(r => setTimeout(r, 10000));
           // emit an event to notify the event buss that a new comment is moderated
           await axios.post('http://localhost:4005/events', event)
     }
