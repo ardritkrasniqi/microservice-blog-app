@@ -57,12 +57,19 @@ app.listen(port, async () => {
     console.log(`Listening on port ${port}`);
 
     // make requrest to the event buss to get all events 
-    const res = await axios.get('http://localhost:4005/events');
+    const res = await axios.get('http://localhost:4005/events')
+    
+    .then(function (success){
+        for(let event of res.data){
+            console.log('processing event: ', event.type);
+    
+            handleEvent(event.type, event.data);
+        }
+    })
+    .catch(function async(error){
+        throw new Error('Error communicating with event bus!');
+    }); // comments service
 
-    for(let event of res.data){
-        console.log('processing event: ', event.type);
-
-        handleEvent(event.type, event.data);
-    }
+    
 })
 
