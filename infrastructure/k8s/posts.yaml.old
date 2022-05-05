@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod   # type of object we want to create
-metadata:  # config options for the object we want to create
-  name: posts # object name
-spec: # the attributes we want to apply to the object we are about to create
-  containers: # we can create many containers in a single pod
-    - name: posts # make a container wieht a name of posts
-      image: ardritdev/posts:0.0.1 # the image we want to use
