@@ -20,7 +20,7 @@ app.post('/events', async (req, res) => {
 
 
     // send the event to different services
-    const posts = axios.post('http://localhost:4000/events', event); // posts service
+    const posts = axios.post('http://posts-clusterip-srv:4000/events', event); // posts service
     const comments = axios.post('http://localhost:4001/events', event).catch(function (error){
         console.log(error);
     }); // comments service
