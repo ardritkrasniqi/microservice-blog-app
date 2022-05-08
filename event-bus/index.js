@@ -23,11 +23,18 @@ app.post('/events', async (req, res) => {
     axios.post('http://posts-clusterip-srv:4000/events', event).catch(function (error){
         console.log(`The error is: ${error}`);
     }); // posts service
-    // const comments = axios.post('http://localhost:4001/events', event).catch(function (error){
-    //     console.log(error);
-    // }); // comments service
-    // const event_buss = axios.post('http://localhost:4002/events', event); // event buss service
-    // const moderation = axios.post('http://localhost:4006/events', event); // comment moderation service
+
+    const comments = axios.post('http://comments-ci-srv:4001/events', event).catch(function (error){
+        console.log(error);
+    }); // comments service
+
+    const event_buss = axios.post('http://query-srv:4002/events', event).catch(function (error){
+        console.log(error);
+    });; // query service
+
+    const moderation = axios.post('http://comment-mod-srv:4006/events', event).catch(function (error){
+        console.log(error);
+    });; // comment moderation service
 
     res.send({ message: "success", status: "true" });
 });

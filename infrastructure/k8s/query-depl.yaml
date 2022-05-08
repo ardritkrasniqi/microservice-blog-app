@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  comment-mod-depl
+  name:  query-depl
 spec:
   replicas: 1
   selector:
     matchLabels: 
-      app: comment-mod
+      app: query
   template:
     metadata:
       labels:
-        app: comment-mod
+        app: query
     spec: 
       containers:
-        - name: comment-mod
-          image: ardritdev/comment-mod:latest
+        - name: query
+          image: ardritdev/query:latest
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: comment-mod-srv
+  name: query-srv
 spec:
   selector:
-    app: comment-mod
+    app: query
   type: ClusterIP
   ports:
-    - name: comment-mod
+    - name: query
       protocol: TCP
-      port: 4006
-      targetPort: 4006
+      port: 4002
+      targetPort: 4002
