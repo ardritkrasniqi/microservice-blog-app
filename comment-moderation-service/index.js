@@ -35,7 +35,7 @@ app.post('/events',  async(req, res) => {
           };         
           //await new Promise(r => setTimeout(r, 10000));
           // emit an event to notify the event buss that a new comment is moderated
-          await axios.post('http://localhost:4005/events', event)
+          await axios.post('http://event-bus-srv:4005/events', event)
     }
 
     res.send({});

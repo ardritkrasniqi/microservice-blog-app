@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  comment-mod-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: comment-mod
+  template:
+    metadata:
+      labels:
+        app: comment-mod
+    spec: 
+      containers:
+        - name: comment-mod
+          image: ardritdev/comment-mod:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comment-mod-srv
+spec:
+  selector:
+    app: comment-mod
+  type: ClusterIP
+  ports:
+    - name: comment-mod
+      protocol: TCP
+      port: 4006
+      targetPort: 4006

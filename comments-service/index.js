@@ -37,7 +37,7 @@ app.post('/posts/:id/comments', async (req, res) => {
       };
 
       // emit an event to notify the event buss that a new comment is created
-      await axios.post('http://localhost:4005/events', event)
+      await axios.post('http://event-bus-srv:4005/events', event)
       
     res.status(200).send(comments);
 });
@@ -70,7 +70,7 @@ app.post('/events', async(req, res) => {
                  status
             }
         }
-        await axios.post('http://localhost:4005/events', event);
+        await axios.post('http://event-bus-srv:4005/events', event);
     }
     
     res.send({message: 'success', status: 'true'})

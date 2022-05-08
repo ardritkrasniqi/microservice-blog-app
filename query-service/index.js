@@ -57,7 +57,7 @@ app.listen(port, async () => {
     console.log(`Listening on port ${port}`);
 
     // make requrest to the event buss to get all events 
-    const res = await axios.get('http://localhost:4005/events')
+    const res = await axios.get('http://event-bus-srv:4005/events')
     
     .then(function (success){
         for(let event of res.data){
