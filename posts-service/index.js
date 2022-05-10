@@ -13,7 +13,7 @@ app.use(cors());
 const posts = [];
 
 // routes for fetching and saving posts
-app.get('/posts', (req, res) => {
+app.get('/posts/create', (req, res) => {
     res.send(posts);
 });
 
