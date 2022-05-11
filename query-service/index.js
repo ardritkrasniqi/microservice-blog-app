@@ -17,7 +17,7 @@ app.get('/posts', (req, res) => {
     res.send(posts);
 });
 
-const handleEvent = async (type, data) => {
+function handleEvent(type, data){
     if (type == 'PostCreated') {
         const { id, title } = data;
         posts[id] = { id, title, comments: [] };
@@ -25,7 +25,7 @@ const handleEvent = async (type, data) => {
         const { id, text, status, post_id } = data;
         const post = posts[post_id];
 
-        await post.comments.push({ id, text, status, post_id })
+        post.comments.push({ id, text, status, post_id })
 
     } else if (type == 'CommentUpdated') {
 
@@ -39,7 +39,7 @@ const handleEvent = async (type, data) => {
         comment.status = status;
         comment.text = text;
     } else {
-       console.log('this event type does not exist!')
+        console.log('this event type does not exist!')
     }
 }
 
@@ -48,28 +48,27 @@ app.post('/events', async (req, res) => {
     // destructure the event data and get type & data
     const { type, data } = req.body;
 
-    await this.handleEvent(type, data);
+    handleEvent(type, data);
 
     res.send({});
 });
 
 app.listen(port, async () => {
     console.log(`Listening on port ${port}`);
+    console.log('v2.3');
 
     // make requrest to the event buss to get all events 
     const res = await axios.get('http://event-bus-srv:4005/events')
-    
-    .then(function (success){
-        for(let event of res.data){
-            console.log('processing event: ', event.type);
-    
-            handleEvent(event.type, event.data);
-        }
-    })
-    .catch(function async(error){
-        throw new Error('Error communicating with event bus!');
-    }); // comments service
+        .then( function async (res)  {
+            for (let event of res.data) {
+                console.log('processing event: ', event.type);
+                 handleEvent(event.type, event.data);
+            }
+        })
+        .catch(function async(error) {
+            console.log(error);
+        }); // comments service
 
-    
+
 })
 
