@@ -1,58 +1,61 @@
-apiVersion: skaffold/v2alpha3
+apiVersion: skaffold/v2beta28
 kind: Config
+metadata:
+  name: blog
+build:
+  artifacts:
+  - image: ardritdev/client
+    context: client
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - dest: .
+          src: 'src/**/*.js'
+  - image: ardritdev/comment-mod
+    context: comment-moderation-service
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - dest: .
+          src: 'src/**/*.js'
+  - image: ardritdev/comments
+    context: comments-service
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - dest: .
+          src: 'src/**/*.js'
+  - image: ardritdev/event-bus
+    context: event-bus
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - dest: .
+          src: 'src/**/*.js'
+  - image: ardritdev/posts
+    context: posts-service
+    docker:
+      dockerfile: Dockerfile
+  - image: ardritdev/query
+    context: query-service
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - dest: .
+          src: 'src/**/*.js'
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/* #telling skaffold that in this folder there are many config files to watch
-build:
-  local:
-    push: false #do not push images to docker hub
-  artifacts:
-    - image: ardritdev/client
-      context: client
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.js'
-    - image: ardritdev/posts
-      context: posts
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.js'
-    - image: ardritdev/comments
-      context: comments
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.js'
-    - image: ardritdev/comment-mod
-      context: comment-mod
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.js'
-    - image: ardritdev/event-bus
-      context: event-bus
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.js'
-    - image: ardritdev/query
-      context: query
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - dest: .
-            src: 'src/**/*.js'
+    - infrastructure/k8s/client-depl.yaml
+    - infrastructure/k8s/comment-mod-depl.yaml
+    - infrastructure/k8s/comments-depl.yaml
+    - infrastructure/k8s/event-bus-depl.yaml
+    - infrastructure/k8s/ingress-srv.yaml
+    - infrastructure/k8s/posts-depl.yaml
+    - infrastructure/k8s/posts-srv.yaml
+    - infrastructure/k8s/query-depl.yaml
